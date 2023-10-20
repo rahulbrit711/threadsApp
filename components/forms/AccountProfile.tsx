@@ -1,50 +1,80 @@
-"use client"
+"use client";
 
-import React, { ChangeEvent } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserValidation } from '@/lib/validations/user';
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from '../ui/button';
-import Image from 'next/image';
-import { Textarea } from '../ui/textarea';
-import * as z from "zod";
+import { Textarea } from "@/components/ui/textarea";
+import { UserValidation } from "@/lib/validations/user";
 
-
-type Props = {
-  user: any
-  btnTitle: any
+interface Props {
+  user: {
+    id: string;
+    objectId: string;
+    username: string;
+    name: string;
+    bio: string;
+    image: string;
+  };
+  btnTitle: string;
 }
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
-  const form = useForm({
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [files, setFiles] = useState<File[]>([]);
+
+  const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
     defaultValues: {
       profile_photo: user?.image ? user.image : "",
       name: user?.name ? user.name : "",
       username: user?.username ? user.username : "",
       bio: user?.bio ? user.bio : "",
-    }
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
-  }
+    // on submit
+  };
 
   const handleImage = (
     e: ChangeEvent<HTMLInputElement>,
     fieldChange: (value: string) => void
   ) => {
     e.preventDefault();
-  }
+
+    const fileReader = new FileReader();
+
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setFiles(Array.from(e.target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = async (event) => {
+        const imageDataUrl = event.target?.result?.toString() || "";
+        fieldChange(imageDataUrl);
+      };
+
+      fileReader.readAsDataURL(file);
+    }
+  };
+
   return (
     <Form {...form}>
       <form
@@ -154,7 +184,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default AccountProfile
+export default AccountProfile;
