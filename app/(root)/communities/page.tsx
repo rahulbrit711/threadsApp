@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 
 async function Page() {
-  const user = await currentUser();
+  //const user = await currentUser();
   //if (!user) return null;
 
   // fetch organization list created by user
@@ -10,10 +10,8 @@ async function Page() {
 
   return (
     <>
-      <h1 className='head-text'>Create Thread</h1>
-      <div className="text-light-1">
-        User Details : {JSON.stringify(user)}
-      </div>
+      <h1 className='head-text'>Communities</h1>
+
     </>
   );
 }

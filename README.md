@@ -1,5 +1,18 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+## Vercel Path
+
+https://threadapp-three.vercel.app/
+
+## Github Repo
+
+https://github.com/rahulbrit711/threadsApp
+
+## Youtube Video link
+
+https://www.youtube.com/watch?v=O5cmLDVTgAs
+
 ## Getting Started
 
 First, run the development server:
